@@ -2,6 +2,7 @@ import { Router } from "express"
 import { check } from "express-validator"
 import { validateFields } from "../middlewares/validate-fields.js"
 import { validateJWT } from "../middlewares/validate-jwt.js"
+import { isAdminRole } from "../middlewares/validate-roles.js"
 import {
   emailExist,
   isRoleValid,
@@ -49,6 +50,7 @@ router.delete(
   "/:id",
   [
     validateJWT,
+    isAdminRole,
     check("id", "Is not a valid ID").isMongoId(),
     check("id").custom(userByIdExist),
     validateFields
