@@ -1,8 +1,8 @@
 import { Router } from "express"
 import { check } from "express-validator"
-import { validateFields } from "../middlewares/validate-fields.js"
-import { validateJWT } from "../middlewares/validate-jwt.js"
-import { isAdminRole, hasRole } from "../middlewares/validate-roles.js"
+
+import { validateFields, validateJWT, hasRole } from "../middlewares/index.js"
+
 import {
   emailExist,
   isRoleValid,
