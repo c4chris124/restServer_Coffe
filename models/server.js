@@ -2,14 +2,19 @@ import express from "express"
 import cors from "cors"
 import userRoute from "../routes/user.routes.js"
 import authRout from "../routes/auth.routes.js"
+import categoriesRoute from "../routes/categories.routes.js"
 import dbConnection from "../db/config.js"
 
 export default class Server {
   constructor() {
     this.app = express()
     this.port = process.env.PORT
-    this.authPath = "/api/auth"
-    this.userPath = "/api/users"
+    this.paths = {
+      auth: "/api/auth",
+      categories: "/api/categories",
+      user: "/api/users"
+    }
+
     // connect db
     this.connectDB()
     // Middleware
@@ -32,8 +37,9 @@ export default class Server {
   }
 
   routes() {
-    this.app.use(this.authPath, authRout)
-    this.app.use(this.userPath, userRoute)
+    this.app.use(this.paths.auth, authRout)
+    this.app.use(this.paths.categories, categoriesRoute)
+    this.app.use(this.paths.user, userRoute)
   }
 
   listen() {
