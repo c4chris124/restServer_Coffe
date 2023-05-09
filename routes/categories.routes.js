@@ -1,10 +1,6 @@
 import { Router } from "express"
 import { check } from "express-validator"
-import {
-  isAdminRole,
-  validateFields,
-  validateJWT
-} from "../middlewares/index.js"
+import { hasRole, validateFields, validateJWT } from "../middlewares/index.js"
 import {
   createCategory,
   deleteCategory,
@@ -12,6 +8,7 @@ import {
   getCategoryById,
   updateCategory
 } from "../controllers/categories.controller.js"
+import { categoryExistById } from "../helpers/db-validators.js"
 
 const router = Router()
 
@@ -22,7 +19,15 @@ router.get("/", getCategories)
 
 // obtain a category by id - public
 // [check("id").custom(categoryExist)]
-router.get("/:id", getCategoryById)
+router.get(
+  "/:id",
+  [
+    check("id", "This is not valid ID").isMongoId(),
+    check("id").custom(categoryExistById),
+    validateFields
+  ],
+  getCategoryById
+)
 // create category - private - anyone with a valid token
 router.post(
   "/",
@@ -35,12 +40,27 @@ router.post(
 )
 
 // update - private - anyone with valid token
-router.put("/:id", updateCategory)
+router.put(
+  "/:id",
+  [
+    validateJWT,
+    check("name", "Name is a must").not().isEmpty(),
+    check("id").custom(categoryExistById),
+    validateFields
+  ],
+  updateCategory
+)
 
 // delete - Admin
 router.delete(
   "/:id",
-  [validateJWT, isAdminRole, validateFields],
+  [
+    validateJWT,
+    hasRole("ADMIN_ROLE"),
+    check("id", "This is not valid ID").isMongoId(),
+    check("id").custom(categoryExistById),
+    validateFields
+  ],
   deleteCategory
 )
 
