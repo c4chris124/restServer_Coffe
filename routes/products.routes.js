@@ -3,15 +3,28 @@ import { check } from "express-validator"
 import { hasRole, validateFields, validateJWT } from "../middlewares/index.js"
 import {
   getProducts,
+  getProductById,
   createProduct
 } from "../controllers/products.controller.js"
-import { categoryExistById } from "../helpers/db-validators.js"
+import {
+  categoryExistById,
+  productExistById
+} from "../helpers/db-validators.js"
 const router = Router()
 
 // obtain all products - public
 router.get("/", getProducts)
 
-// router.get('/')
+// obtain a category by id - public
+router.get(
+  "/:id",
+  [
+    check("id", "This is not valid ID").isMongoId(),
+    check("id").custom(productExistById),
+    validateFields
+  ],
+  getProductById
+)
 
 // create category - private - anyone with a valid token
 router.post(
