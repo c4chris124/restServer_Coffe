@@ -1,8 +1,11 @@
 import express from "express"
 import cors from "cors"
-import userRoute from "../routes/user.routes.js"
-import authRout from "../routes/auth.routes.js"
-import categoriesRoute from "../routes/categories.routes.js"
+import {
+  userRoute,
+  authRoute,
+  categoriesRoute,
+  productsRoute
+} from "../routes/index.routes.js"
 import dbConnection from "../db/config.js"
 
 export default class Server {
@@ -12,6 +15,7 @@ export default class Server {
     this.paths = {
       auth: "/api/auth",
       categories: "/api/categories",
+      products: "/api/products",
       user: "/api/users"
     }
 
@@ -37,8 +41,9 @@ export default class Server {
   }
 
   routes() {
-    this.app.use(this.paths.auth, authRout)
+    this.app.use(this.paths.auth, authRoute)
     this.app.use(this.paths.categories, categoriesRoute)
+    this.app.use(this.paths.products, productsRoute)
     this.app.use(this.paths.user, userRoute)
   }
 
