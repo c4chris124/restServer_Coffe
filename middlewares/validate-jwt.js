@@ -6,14 +6,14 @@ const validateJWT = async (req = request, res = response, next) => {
   const token = req.header("x-token")
   if (!token) {
     return res.status(401).json({
-      msg: "Theres is token on the request"
+      msg: "Theres is no token on the request"
     })
   }
   try {
     const { uid } = jwt.verify(token, process.env.SECRETORPRIVATEKEY)
     // read user who corresponde the uid
     const user = await User.findById(uid)
-    if(!user){
+    if (!user) {
       return res.status(401).json({
         msg: "Invalid Token - user does not exist on DB"
       })
