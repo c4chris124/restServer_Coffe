@@ -36,4 +36,16 @@ const createProduct = async (req = request, res = response) => {
   res.status(201).json(newProduct)
 }
 
-export { getProducts, getProductById, createProduct }
+// update Product
+const updateProduct = async (req = request, res = response) => {
+  const { id } = req.params
+  const { status, user, ...product } = req.body
+  data.user = req.user._id
+
+  const productUpdated = await Product.findByIdAndUpdate(id, product, {
+    new: true
+  })
+  res.json(productUpdated)
+}
+
+export { getProducts, getProductById, createProduct, updateProduct }
