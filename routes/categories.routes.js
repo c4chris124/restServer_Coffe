@@ -18,7 +18,6 @@ const router = Router()
 router.get("/", getCategories)
 
 // obtain a category by id - public
-// [check("id").custom(categoryExist)]
 router.get(
   "/:id",
   [
