@@ -4,7 +4,8 @@ import { hasRole, validateFields, validateJWT } from "../middlewares/index.js"
 import {
   getProducts,
   getProductById,
-  createProduct
+  createProduct,
+  updateProduct
 } from "../controllers/products.controller.js"
 import {
   categoryExistById,
@@ -32,15 +33,26 @@ router.post(
   [
     validateJWT,
     check("name", "name is a must").not().isEmpty(),
+    check("category", "This is not valid Category ID").isMongoId(),
     check("category").custom(categoryExistById),
     validateFields
   ],
   createProduct
 )
 
-// router.put('/')
+// update - private - anyone with valid token
+router.put(
+  "/:id",
+  [
+    validateJWT,
+    check("id").custom(productExistById),
+    check("category", "This is not valid Category ID").isMongoId(),
+    check("category").custom(categoryExistById),
+    validateFields
+  ],
+  updateProduct
+)
 
-// router.delete('/')
+// delete - Admin
 
 export default router
-// 64598e7d9768c07f9092a5df
