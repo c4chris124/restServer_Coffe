@@ -16,6 +16,13 @@ const getProducts = async (req = request, res = response) => {
   res.json({ total, products })
 }
 
+// obtain product - populate - {}
+const getProductById = async (req = request, res = response) => {
+  const { id } = req.params
+  const product = await Product.findById(id).populate("category", "name")
+  res.json(product)
+}
+
 // create product
 const createProduct = async (req = request, res = response) => {
   const product = req.body
@@ -29,4 +36,4 @@ const createProduct = async (req = request, res = response) => {
   res.status(201).json(newProduct)
 }
 
-export { getProducts, createProduct }
+export { getProducts, getProductById, createProduct }
