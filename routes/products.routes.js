@@ -1,11 +1,15 @@
 import { Router } from "express"
 import { check } from "express-validator"
 import { hasRole, validateFields, validateJWT } from "../middlewares/index.js"
-import { createProduct } from "../controllers/products.controller.js"
+import {
+  getProducts,
+  createProduct
+} from "../controllers/products.controller.js"
 import { categoryExistById } from "../helpers/db-validators.js"
 const router = Router()
 
-// router.get('/')
+// obtain all products - public
+router.get("/", getProducts)
 
 // router.get('/')
 
