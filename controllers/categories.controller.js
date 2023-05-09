@@ -11,7 +11,7 @@ const getCategories = async (req = request, res = response) => {
     Category.find(query)
       .skip(Number(since))
       .limit(Number(limit))
-      .populate("user")
+      .populate("user", "name")
   ])
   res.json({ total, categories })
 }
@@ -19,7 +19,7 @@ const getCategories = async (req = request, res = response) => {
 // obtain category - populate - {}
 const getCategoryById = async (req = request, res = response) => {
   const { id } = req.params
-  const category = await Category.findById(id)
+  const category = await Category.findById(id).populate("user", "name")
   res.json(category)
 }
 
@@ -50,14 +50,20 @@ const createCategory = async (req = request, res = response) => {
 // update category
 const updateCategory = async (req = request, res = response) => {
   const { id } = req.params
-  const { name } = req.body
-  const categoryDB = await Category.findByIdAndUpdate(id, name)
+  const { status, user, ...data } = req.body
+  data.name = data.name.toUpperCase()
+  data.user = req.user._id
+  const categoryDB = await Category.findByIdAndUpdate(id, data, { new: true })
   res.json(categoryDB)
 }
 // delete category - status:false
 const deleteCategory = async (req = request, res = response) => {
   const { id } = req.params
-  const category = await Category.findOneAndUpdate(id, { status: false })
+  const category = await Category.findOneAndUpdate(
+    id,
+    { status: false },
+    { new: true }
+  )
   res.json(category)
 }
 
