@@ -5,7 +5,8 @@ import {
   getProducts,
   getProductById,
   createProduct,
-  updateProduct
+  updateProduct,
+  deleteProduct
 } from "../controllers/products.controller.js"
 import {
   categoryExistById,
@@ -20,7 +21,7 @@ router.get("/", getProducts)
 router.get(
   "/:id",
   [
-    check("id", "This is not valid ID").isMongoId(),
+    check("id", "This is not a valid ID").isMongoId(),
     check("id").custom(productExistById),
     validateFields
   ],
@@ -33,7 +34,7 @@ router.post(
   [
     validateJWT,
     check("name", "name is a must").not().isEmpty(),
-    check("category", "This is not valid Category ID").isMongoId(),
+    check("category", "This is not a valid Category ID").isMongoId(),
     check("category").custom(categoryExistById),
     validateFields
   ],
@@ -43,16 +44,21 @@ router.post(
 // update - private - anyone with valid token
 router.put(
   "/:id",
-  [
-    validateJWT,
-    check("id").custom(productExistById),
-    check("category", "This is not valid Category ID").isMongoId(),
-    check("category").custom(categoryExistById),
-    validateFields
-  ],
+  [validateJWT, check("id").custom(productExistById), validateFields],
   updateProduct
 )
 
 // delete - Admin
+router.delete(
+  "/:id",
+  [
+    validateJWT,
+    hasRole("ADMIN_ROLE"),
+    check("id", "This is not valid ID").isMongoId(),
+    check("id").custom(productExistById),
+    validateFields
+  ],
+  deleteProduct
+)
 
 export default router
