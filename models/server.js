@@ -3,6 +3,7 @@ import cors from "cors"
 import {
   userRoute,
   authRoute,
+  searchRoute,
   categoriesRoute,
   productsRoute
 } from "../routes/index.routes.js"
@@ -14,6 +15,7 @@ export default class Server {
     this.port = process.env.PORT
     this.paths = {
       auth: "/api/auth",
+      search: "/api/search",
       categories: "/api/categories",
       products: "/api/products",
       user: "/api/users"
@@ -42,6 +44,7 @@ export default class Server {
 
   routes() {
     this.app.use(this.paths.auth, authRoute)
+    this.app.use(this.paths.search, searchRoute)
     this.app.use(this.paths.categories, categoriesRoute)
     this.app.use(this.paths.products, productsRoute)
     this.app.use(this.paths.user, userRoute)
