@@ -25,12 +25,28 @@ const searchUsers = async (term = "", res = response) => {
   })
 }
 
+const searchCategories = async (term = "", res = response) => {
+  const isMongoID = ObjectId.isValid(term)
+  if (isMongoID) {
+    const category = await Category.findOne({ _id: term, status: true })
+    return res.json({
+      results: category ? [category] : []
+    })
+  }
+
+  const regex = RegExp(term, "i")
+
+  const categories = await Category.find({ name: regex, status: true })
+
+  res.json({
+    results: categories
+  })
+}
+
 const searchProducts = async (term = "", res = response) => {
   const isMongoID = ObjectId.isValid(term)
   if (isMongoID) {
-    const product = await Product.findOne({
-      $and: [{ _id: term }, { status: true }]
-    })
+    const product = await Product.findOne({ _id: term, status: true })
     return res.json({
       results: product ? [product] : []
     })
@@ -38,9 +54,7 @@ const searchProducts = async (term = "", res = response) => {
 
   const regex = new RegExp(term, "i")
 
-  const products = await Product.find({
-    $and: [{ name: regex }, { status: true }]
-  })
+  const products = await Product.find({ name: regex, status: true })
   res.json({
     results: products
   })
@@ -60,6 +74,7 @@ const search = (req = request, res = response) => {
       searchUsers(term, res)
       break
     case "categories":
+      searchCategories(term, res)
       break
     case "products":
       searchProducts(term, res)
