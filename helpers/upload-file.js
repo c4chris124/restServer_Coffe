@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 
 const uploadFile = (
   files,
-  validExtensions = ["png", "JPG", "jpeg", "gif"],
+  validExtensions = ["png", "JPG", "jpg", "jpeg", "gif"],
   folder = ""
 ) => {
   return new Promise((resolve, reject) => {
