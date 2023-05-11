@@ -3,7 +3,8 @@ import {
   emailExist,
   userByIdExist,
   categoryExistById,
-  productExistById
+  productExistById,
+  allowCollections
 } from "./db-validators.js"
 import generateJWT from "./generate-jwt.js"
 import googleVerify from "./google-verify.js"
@@ -15,6 +16,7 @@ export {
   userByIdExist,
   categoryExistById,
   productExistById,
+  allowCollections,
   generateJWT,
   googleVerify,
   uploadFile
