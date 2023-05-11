@@ -25,4 +25,9 @@ const loadFiles = async (req = request, res = response) => {
   }
 }
 
-export { loadFiles }
+const updateImgs = async (req = request, res = response) => {
+  const { id, collection } = req.params
+  res.json({ id, collection })
+}
+
+export { loadFiles, updateImgs }
