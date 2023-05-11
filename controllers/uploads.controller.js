@@ -8,12 +8,21 @@ const loadFiles = async (req = request, res = response) => {
     })
     return
   }
-  // images
-  const fileName = await uploadFile(req.files)
 
-  res.json({
-    fileName
-  })
+  try {
+    // using try catch as rejects are blowing up the server
+    // managed error in correct way
+    // images
+    // const ext = ["txt", "md"]
+    // const fileName = await uploadFile(req.files, ext, "txt")
+    const fileName = await uploadFile(req.files, undefined, "imgs")
+
+    res.json({
+      fileName
+    })
+  } catch (msg) {
+    res.status(400).json({ msg })
+  }
 }
 
 export { loadFiles }
