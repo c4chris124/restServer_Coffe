@@ -5,7 +5,8 @@ import {
   authRoute,
   searchRoute,
   categoriesRoute,
-  productsRoute
+  productsRoute,
+  uploadsRoute
 } from "../routes/index.routes.js"
 import dbConnection from "../db/config.js"
 
@@ -18,7 +19,8 @@ export default class Server {
       search: "/api/search",
       categories: "/api/categories",
       products: "/api/products",
-      user: "/api/users"
+      user: "/api/users",
+      uploads: "/api/uploads"
     }
 
     // connect db
@@ -48,6 +50,7 @@ export default class Server {
     this.app.use(this.paths.categories, categoriesRoute)
     this.app.use(this.paths.products, productsRoute)
     this.app.use(this.paths.user, userRoute)
+    this.app.use(this.paths.uploads, uploadsRoute)
   }
 
   listen() {
