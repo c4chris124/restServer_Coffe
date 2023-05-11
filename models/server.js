@@ -1,5 +1,6 @@
 import express from "express"
 import cors from "cors"
+import fileUpload from "express-fileupload"
 import {
   userRoute,
   authRoute,
@@ -42,6 +43,14 @@ export default class Server {
     this.app.use(express.json())
     // Public dir
     this.app.use(express.static("public"))
+    // File uploads
+    // Note that this option available for versions 1.0.0 and newer.
+    this.app.use(
+      fileUpload({
+        useTempFiles: true,
+        tempFileDir: "/tmp/"
+      })
+    )
   }
 
   routes() {
