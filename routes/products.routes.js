@@ -8,10 +8,7 @@ import {
   updateProduct,
   deleteProduct
 } from "../controllers/products.controller.js"
-import {
-  categoryExistById,
-  productExistById
-} from "../helpers/db-validators.js"
+import { categoryExistById, productExistById } from "../helpers/index.js"
 const router = Router()
 
 // obtain all products - public

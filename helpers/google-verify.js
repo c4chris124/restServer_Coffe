@@ -18,4 +18,4 @@ async function googleVerify(token = "") {
   }
 }
 
-export { googleVerify }
+export default googleVerify

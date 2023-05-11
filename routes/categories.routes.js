@@ -8,7 +8,7 @@ import {
   getCategoryById,
   updateCategory
 } from "../controllers/categories.controller.js"
-import { categoryExistById } from "../helpers/db-validators.js"
+import { categoryExistById } from "../helpers/index.js"
 
 const router = Router()
 

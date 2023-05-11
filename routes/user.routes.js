@@ -3,11 +3,7 @@ import { check } from "express-validator"
 
 import { validateFields, validateJWT, hasRole } from "../middlewares/index.js"
 
-import {
-  emailExist,
-  isRoleValid,
-  userByIdExist
-} from "../helpers/db-validators.js"
+import { emailExist, isRoleValid, userByIdExist } from "../helpers/index.js"
 import {
   deleteUsers,
   getUsers,
