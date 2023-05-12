@@ -1,5 +1,6 @@
 import { response, request } from "express"
 import { uploadFile } from "../helpers/index.js"
+import { User, Product } from "../models/index.js"
 
 const loadFiles = async (req = request, res = response) => {
   if (!req.files || Object.keys(req.files).length === 0 || !req.files.file) {
@@ -27,7 +28,39 @@ const loadFiles = async (req = request, res = response) => {
 
 const updateImgs = async (req = request, res = response) => {
   const { id, collection } = req.params
-  res.json({ id, collection })
+
+  let model
+
+  switch (collection) {
+    case "users":
+      model = await User.findById(id)
+      if (!model) {
+        return res.status(400).json({
+          msg: `User with ${id} does not exist`
+        })
+      }
+      break
+
+    case "products":
+      model = await Product.findById(id)
+      if (!model) {
+        return res.status(400).json({
+          msg: `Product with ${id} does not exist`
+        })
+      }
+      break
+
+    default:
+      return res.status(500).json({ msg: "forgot to validate this one" })
+  }
+
+  const fileName = await uploadFile(req.files, undefined, collection)
+  model.img = fileName
+
+  await model.save()
+  // console.log(model.save())
+
+  res.json(model)
 }
 
 export { loadFiles, updateImgs }
